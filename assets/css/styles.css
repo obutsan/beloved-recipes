@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Montserrat+Alternates:wght@300&family=Montserrat:wght@300&display=swap");
+
+:root {
+  --lightColor: #f0f4ed;;
+  --lightGrey: #dfdfdf;
+  --lightGreen: #b0f097;
+  --darkLime: #55ac08;
+  --sottel: "Sottel", sans-serif;
+}
+
+.navbar {
+
+  z-index: 1;
+  width: 100%;
+  background-color: var(--lightColor);
+}
+
+.social {
+      padding: 0;
+      width: 115px;
+}
+
+.navbar-brand {
+  font-family: "Inter", sans-serif;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat Alternates", sans-serif;
+  font-size: 50px;
+  margin-left: 2%;
+  margin-right: 32%;
+  
+}
+
+.card {
+  height: 360px;
+}
+
+.navbar-collapse {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5rem;
+}
+
+.favourite {
+  margin-left: 5%;
+}
+
+#hero {
+  color: black;
+  padding: 5%;
+}
+
+#recipes {
+  display: flex;
+  justify-content: space-around;
+  background: var(--lightGreen);
+  padding: 5%;
+}
+
+.container {
+align-items: center;
+justify-content: center;
+
+}
+
+.btn {
+  background: var(--darkLime);
+  color: var(--lightColor);
+  font-family: var(--sottel);
+  border-color: var(--darkLime);
+  border-width: 2px;
+  padding: 5px;
+}
+  
+.btnshadow:hover {
+  box-shadow: 0 30px 30px var(--darkLime);
+}
+.btn:hover {
+  box-shadow: 0 6px 10px var(--darkLime);
+  background-color: var(--lightColor);
+  color: var(--darkLime)
+}
+
+/*--------FOOTER---------------*/
+
+.footer {
+  background-color: var(--lightGreen);
+}
+
+.footer1 {
+  background-color: var(--lightColor);
+  color: black;
+  padding: 1%;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+}
+.subscribe {
+  display: flex;
+  border-radius: 8%;
+  justify-content: center;
+  background: var(--darkLime);
+  padding: 0 10%;
+}
+
+.btn-subscribe {
+  border-color: var(--lightColor);
+  padding: 2%; 
+  font-weight: bold;
+  font-size:large
+}
+
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.2);
+}
+
+.favouriteIcon:hover {
+  cursor: pointer;
+}
+
+.icons-link {
+  padding: 15%;
+}
+
+.icons-container{
+  padding: 3%;
+}
+
+.modal-header {
+  justify-content: end;
+}
+
+
+.modal-body {
+  width: 100%;
+  min-width: 300px;
+  min-height: 300px;
+}
+
+.modalImg {
+  width: 100%;
+}
+
+.subscribe {
+  padding: 10px 20px;
+}
+
+form {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .modal-body {
+    width: 700px;
+    min-width: 500px;
+    min-height: 500px;
+  }
+}
+
+.subscribeBtn {
+  padding: 7px 0;
+}
+
+#reserved {
+  color: black;
+}
+=======
+
+.favouriteIcon:hover{
+  cursor:pointer;
+}
+
+.favourite:hover{
+  cursor:pointer;
+  transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+@media only screen and (max-width: 767px) {
+  .card-deck {
+    flex-direction: column;
+  }
+
+  .card {
+    margin-bottom: 15px;
+    width: 90% !important;
+    height: auto;
+  }
+}
+
+
