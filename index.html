@@ -17,21 +17,36 @@
   <header>
     <nav class="navbar navbar-expand-lg container">
       <div class="container">
-        <a class="navbar-brand" href="/" id="logo"><img src="./assets/images/logo.jpg" alt="logo" class="logo" style="width: 110px; height: 110px;"/></a>
+        <a class="navbar-brand" href="/index.html" id="logo"><img src="./assets/images/logo.jpg" alt="logo" class="logo" style="width: 110px; height: 110px;"/></a>
+        <div class="navbar-text">
+          <p class="fw-bold fst-italic font-monospace fs-5 text-success text-center py-3 slogan">
+            Your go-to place for delicious recipes and culinary inspiration.
+          </p>
+          
+          
+        </div>  
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                id="searchInput" />
-              <button class="btn btn-outline-success" id="searchButton" type="button">
-                Search
-              </button>
-            </form>
-            <button class="btn btn-link text-danger" style="font-size: 48px; background-color: transparent; border: none; margin-top: -17px; margin-left: 10px; " data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+            <form class="d-flex" id="searchForm">
+                <label for="query" class="visually-hidden">Search for recipes</label>
+                <input 
+                  class="form-control me-2" 
+                  type="search" 
+                  name="query" 
+                  placeholder="Enter recipe name" 
+                  id="query" 
+                />
+                <button 
+                  class="btn btn-outline-success" 
+                  type="submit">
+                  Search
+                </button>
+              </form>              
+            <button class="btn-fav" data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
                 <i class="material-icons" style="font-size: 48px; color: rgb(240, 127, 127)" data-toggle="modal" data-target="#exampleModal">favorite</i>
             </button>
           </ul>
@@ -42,39 +57,23 @@
 
   <!-- Hero Section -->
 
-  <div class="jumbotron container text-center text-bla" id="hero">
-    <div class="container">
-      <div class="row filter">
-        <p class="lead col-lg-3 col-sm-6">
-          <button class="btn btnshadow btn-primary btn-lg mb-3" id="breakfast" role="button">
-            Breakfast
-          </button>
-        </p>
-        <p class="lead col-lg-3 col-sm-6">
-          <button class="btn btnshadow btn-primary btn-lg mb-3" id="main" role="button">
-            Dinner
-          </button>
-        </p>
-        <p class="lead col-lg-3 col-sm-6">
-          <button class="btn btnshadow btn-primary btn-lg mb-3" id="desserts" role="button">
-            Desserts
-          </button>
-        </p>
-        <p class="lead col-lg-3 col-sm-6">
-          <button class="btn btnshadow btn-primary btn-lg mb-3" id="drinks" role="button">
-            Drinks
-          </button>
-        </p>
-      </div>
+  <div class="container text-center" id="hero">
+    <div class="d-flex flex-wrap justify-content-between filter">
+      <button class="btn btnshadow btn-primary btn-lg mb-3" id="breakfast">Breakfast</button>
+      <button class="btn btnshadow btn-primary btn-lg mb-3" id="main">Main course</button>
+      <button class="btn btnshadow btn-primary btn-lg mb-3" id="side">Side dish</button>
+      <button class="btn btnshadow btn-primary btn-lg mb-3" id="salad">Salads</button>
+      <button class="btn btnshadow btn-primary btn-lg mb-3" id="desserts">Desserts</button>
+      <button class="btn btnshadow btn-primary btn-lg mb-3" id="drinks">Drinks</button>
     </div>
+    
   </div>
-
 
   <!-- Cards Section -->
 
-  <section class="section"></section>
-  <section class="section"></section>
-  <div class="card-deck container" id="recipes"></div>
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 card-deck" id="recipes"></div>
+  </div>
 
   <!-- Scrollable modal -->
   <dialog class="dialog">
@@ -104,85 +103,7 @@
     </div>
     <button id="clearLocalStorageBtn" class="btn btn-danger">Clear All</button>
   </div>
-
-
-  <!-----------------------------FOOTER --------------------------->
-
-  <section class="sub-form" id="sub-form">
-    <div class="container text-white">
-      <div class="row">
-        <div class="col-md-6 mx-auto text-center footer1">
-          <h5 class="section-heading mb-4">Subscribe to our newsletter:</h5>
-          <!-- Form -->
-          <div class="form">
-            <div class="subscribe">
-              <form>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInputName"></label>
-                      <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        placeholder="Name" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInputEmail1"></label>
-                      <input type="email" class="form-control" id="exampleInputPassword1" placeholder="Email" />
-                    </div>
-                  </div>
-                </div>
-                <div class="row subscribeBtn">
-                  <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary btn-subscribe">
-                      Subscribe!
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-
-
-          </div>
-          <div class="col-md-6 mx-auto text-center footer1">
-            <h5 class="section-heading">Find us on social media:</h5>
-            <div class="icons-container">
-              <div class="row gap-1 justify-content-center align-items-center">
-                  <div class="col-md-3 col-sm-1 social">
-                      <a class="icons-link d-block" href="https://www.facebook.com/">
-                          <img src="./assets/images/icons/facebook.png" alt="Facebook icon" class="icon w-50 hvr-grow img-fluid" />
-                      </a>
-                  </div>
-                  <div class="col-md-3 social">
-                      <a class="icons-link d-block" href="https://www.instagram.com/">
-                          <img src="./assets/images/icons/instagram.png" alt="Instagram icon" class="icon w-50 hvr-grow img-fluid" />
-                      </a>
-                  </div>
-                  <div class="col-md-3 social">
-                      <a class="icons-link d-block" href="https://www.whatsapp.com/">
-                          <img src="./assets/images/icons/whatsapp.png" alt="Whatsapp icon" class="icon w-50 hvr-grow img-fluid" />
-                      </a>
-                  </div>
-              </div>
-        </div>
-        </div>
-          </div>
-        </div>
-      </div>
-      
-    </section>
-    
-    <section class="container footer text-center text-white p-2" id="footer">
-      <div class="">
-        <div class="row">
-          <div class="col-md-8 mx-auto">
-            <p id="reserved">&copy; Pod 5 (Group 4) 2024. All Rights Reserved.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
+ 
     <!-- Modal for showing the error fetching data  -->
     <div class="modal fade text-start"  data-bs-keyboard="false" id="modal1" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -197,6 +118,65 @@
           </div>
       </div>
     </div>
+
+    <!-----------------------------FOOTER --------------------------->
+
+ <footer class="footer bg-light py-4">
+  <div class="footer-container container">
+    <div class="row">
+      <!-- Логотип -->
+      <div class="footer-logo col-6 col-md-3 text-center text-md-start mb-3 mb-md-0">
+        <a class="navbar-brand" href="/index.html" id="logo">
+          <img src="./assets/images/logo.jpg" alt="logo" class="logo img-fluid" style="width: 110px; height: 110px;" />
+        </a>
+      </div>
+
+      <!-- Швидкі посилання -->
+      <div class="footer-links col-6 col-sm-6 col-md-3 mb-3">
+        <h3 class="h5 mb-3">Quick Links</h3>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/index.html" class="text-success text-decoration-none">Home</a></li>
+          <li class="mb-2"><a href="/index.html" class="text-success text-decoration-none">Categories</a></li>
+          <li class="mb-2"><a href="/index.html" class="text-success text-decoration-none">Favorites</a></li>
+        </ul>
+      </div>
+
+      <!-- Соціальні мережі -->
+      <div class="footer-social col-6 col-sm-6 col-md-3 mb-3">
+        <h3 class="h5 mb-3">Follow Us</h3>
+        <div class="social-icons d-flex justify-content-center justify-content-md-start gap-2">
+          <a href="https://facebook.com" target="_blank" aria-label="Follow us on Facebook">
+            <img src="./assets/images/icons/facebook.png" alt="Facebook icon" class="img-fluid" style="width: 30px; height: 30px;" />
+          </a>
+          <a href="https://twitter.com" target="_blank" aria-label="Follow us on Twitter">
+            <img src="./assets/images/icons/twitter.png" alt="Twitter icon" class="img-fluid" style="width: 30px; height: 30px;" />
+          </a>
+          <a href="https://instagram.com" target="_blank" aria-label="Follow us on Instagram">
+            <img src="./assets/images/icons/instagram.png" alt="Instagram icon" class="img-fluid" style="width: 30px; height: 30px;" />
+          </a>
+          <a href="https://pinterest.com" target="_blank" aria-label="Follow us on Pinterest">
+            <img src="./assets/images/icons/pinterest.png" alt="Pinterest icon" class="img-fluid" style="width: 30px; height: 30px;" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Контакти -->
+      <div class="footer-contact col-6 col-md-3">
+        <h3 class="h5 mb-3">Contact Us</h3>
+        <ul class="list-unstyled">
+          <li class="mb-2">Email: <a href="mailto:contact@recipesite.com" class="text-success">contact@recipesite.com</a></li>
+          <li class="mb-2">Phone: <a href="tel:+1234567890" class="text-success">+1 234 567 890</a></li>
+          <li>Address: 123 Recipe Street, Culinary City, CO</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom text-center mt-3 text-success">
+    <p class="mb-0">&copy; 2024 RecipeSite. All Rights Reserved.</p>
+  </div>
+</footer>
+
 
     <!-- jQuery -->
  

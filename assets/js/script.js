@@ -4,24 +4,23 @@ const spoonAPI_KEY = "e45feb6b607140ccb6606be1e50094dc";
 const spoonURL = "https://api.spoonacular.com/recipes/complexSearch";
 const spoonacularURL = "https://api.spoonacular.com/recipes";
 
-// Ninja Nutrition API
-const nutritionAPI_KEY = "cdNqZImiN0YKg9Zkpdz3ow==7vSXmA0YWuPePX5J";
 
 // function that gets recipes by type
 
-async function getSpoonacularRecipe(type) {
+async function filterRecipes(type) {
   try {
     const response = await fetch(
-      `${spoonURL}?number=4&apiKey=${spoonAPI_KEY}&type=${type}`
+      `${spoonURL}?number=12&apiKey=${spoonAPI_KEY}&type=${type}`
     );
     const data = await response.json();
-    cleanRenderCard();
-    console.log(data.results);
+    document.getElementById("recipes").innerHTML = ""; // Clear previous results 
+
     for (const recipe of data.results) {
-        // Render the card with the obtained nutrition information
-        renderCard(recipe, recipe.servings, recipe.id);
+      const recipeDetails = await fetchRecipeDetails(recipe.id);
+      if (recipeDetails) {
+        renderCard(recipeDetails, recipeDetails.servings, recipeDetails.id);
+      }
     }
-    //addCardEventListener();
     return data.results;
   } catch (error) {
     displayErrorMessage();
@@ -33,7 +32,7 @@ async function getSpoonacularRecipe(type) {
 async function getSpoonacularRandom() {
   try {
     const response = await fetch(
-      `${spoonacularURL}/random?number=4&apiKey=${spoonAPI_KEY}`
+      `${spoonacularURL}/random?number=12&apiKey=${spoonAPI_KEY}`
     );
     const data = await response.json();
     console.log(data.recipes);
@@ -55,6 +54,7 @@ async function getDetailsById(recipeId) {
       `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${spoonAPI_KEY}`
     );
     const data = await response.json();
+    console.log(data);
     return { name: data.title, link: data.sourceUrl };
   } catch (error) {
     displayErrorMessage();
@@ -63,7 +63,7 @@ async function getDetailsById(recipeId) {
 
 // function that render recipe description
 
-async function renderDescriptionCard(id) {
+/*async function renderDescriptionCard(id) {
   try {
     const response = await fetch(
       `${spoonacularURL}/${id}/card?apiKey=${spoonAPI_KEY}`
@@ -79,15 +79,15 @@ async function renderDescriptionCard(id) {
     displayErrorMessage();
   }
 }
-
-
-// function that render recipes cards
+  */
 
 const recipesContainer = $("#recipes");
 const modal = document.querySelector("dialog");
 
+// function that render recipes cards
+
 function renderCard(recipe, servings, id) {
-  let cardEl = $('<div class="card" style="width: 15rem;">').attr("data-id", id);
+  let cardEl = $('<div class="card h-100" style="width: 15rem;">').attr("data-id", id);
   let cardImg = $('<img class="card-img-top" alt="recipe img">').attr("src", recipe.image);
   let cardBody = $('<div class="card-body">');
   let cardTitle = $('<h5 class="card-title">').text(recipe.title);
@@ -130,8 +130,31 @@ function renderCard(recipe, servings, id) {
 
 }
 
-// toggle function to handle favourites
+// function to show notification
+function showNotification(message, favouriteIcon, isError = false) {
+       const notification = $("<div>")
+      .addClass("notification")
+      .toggleClass("error", isError)
+      .text(message);
+  
+    
+    $("body").append(notification);
+  
+    const iconOffset = favouriteIcon.offset();
+    notification.css({
+      top: iconOffset.top - 10, 
+      left: iconOffset.left + favouriteIcon.outerWidth() + 10, 
+      position: "absolute",
+    });
+  
+    notification.fadeIn();
+  
+    setTimeout(() => {
+      notification.fadeOut(() => notification.remove());
+    }, 1500);
+  }
 
+// toggle function to handle favourites
 function toggleFavourite(recipeID, favouriteIcon) {
     let fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   
@@ -140,10 +163,12 @@ function toggleFavourite(recipeID, favouriteIcon) {
       // Remove the recipeID from favorites
       fav = fav.filter(id => id !== recipeID);
       favouriteIcon.attr("src", "./assets/images/icons/notfavourite.png");
+      showNotification("Recipe removed from favourites", favouriteIcon, true);
     } else {
       // Add the recipeID to favorites
       fav.push(recipeID);
       favouriteIcon.attr("src", "./assets/images/icons/favourite.png");
+      showNotification("Recipe added to favourites", favouriteIcon);
     }
   
     // Save updated favorites back to localStorage
@@ -161,22 +186,14 @@ function toggleFavourite(recipeID, favouriteIcon) {
       toggleFavourite(cardId, target);
     } else {
       // Otherwise, render card description
-      renderDescriptionCard(cardId);
       modal.showModal();
+      renderRecipePage(cardId);
       $(".modal-body").text("");
     }
   });
 
 
-// Handle the clicking on close button
-
-$(".close").on("click", (e) => {
-  e.preventDefault();
-  modal.close();
-});
-
 // Function to inform the user of a error while fetching the data.
-
 function displayErrorMessage() {
   if (bootstrap == undefined) {
     document
@@ -188,15 +205,16 @@ function displayErrorMessage() {
   }
 }
 
+// Handle the clicking on close button
+$(".close").on("click", (e) => {
+  e.preventDefault();
+  modal.close();
+});
+
 // Filter button event listener
   $(".filter").on("click", function (e) {
-    getSpoonacularRecipe(e.target.id);
+    filterRecipes(e.target.id);
   });
-
-function cleanRenderCard() {
-  const recipeSection = $("#recipes");
-  recipeSection.empty();
-}
 
 function displayFavourites() {
   const fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
@@ -229,14 +247,120 @@ $("#clearLocalStorageBtn").on("click", function () {
 
 // Function to handle search 
 
+async function searchRecipes(query) {
+  if (!query || query.trim() === "") {
+    alert("Please enter a valid recipe name.");
+    return;
+  }
 
-// Search button functionality
-  $("#searchButton").on("click", function () {
-    const selectedMealType = $("#searchInput").val().toLowerCase();
-    getSpoonacularRandom(selectedMealType);
+  const encodedQuery = encodeURIComponent(query.trim());
+  const url = `https://api.spoonacular.com/recipes/autocomplete?number=12&query=${encodedQuery}&apiKey=${spoonAPI_KEY}`;
+
+  console.log(`Searching for: ${query}`);
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    document.getElementById("recipes").innerHTML = ""; // Clear previous results
+    console.log("Fetched recipes:", data);
+
+    for (const recipe of data) {
+      const recipeDetails = await fetchRecipeDetails(recipe.id);
+      if (recipeDetails) {
+        renderCard(recipeDetails, recipeDetails.servings, recipeDetails.id);
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    alert("An error occurred while fetching recipes. Please check your internet connection or try again later.");
+  }
+}
+
+// Helper function to fetch detailed recipe data
+
+async function fetchRecipeDetails(id) {
+  const url = `https://api.spoonacular.com/recipes/${id}/information?apiKey=${spoonAPI_KEY}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching details for recipe ID ${id}:`, error);
+    return null;
+  }
+}
+
+// add event listenet to search form
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("query").value.trim();
+    searchRecipes(query);
   });
 
+// function to render recipe description
+async function renderRecipePage(recipeId) {
+  const recipeDetailsUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${spoonAPI_KEY}`;
 
+  try {
+    const response = await fetch(recipeDetailsUrl);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const recipe = await response.json();
+
+    // Container for recipe details
+    const recipeContainer = document.createElement("div");
+    recipeContainer.className = "recipe-page";
+
+    // Recipe content
+    recipeContainer.innerHTML = `
+      <div class="recipe-header">
+        <h2>${recipe.title}</h2>
+        <button id="closeRecipePage" class="btn btn-danger">Close</button>
+      </div>
+      <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image" />
+      <h3>Instructions</h3>
+      <ol class="recipe-instructions">
+        ${recipe.analyzedInstructions.length
+          ? recipe.analyzedInstructions[0].steps
+              .map((step) => `<li>${step.step}</li>`)
+              .join("")
+          : "<p>No instructions available</p>"}
+      </ol>
+      <div class="recipe-actions">
+        <button id="addToFavorites" class="btn btn-outline-primary">Add to Favorites</button>
+        <button id="printRecipe" class="btn btn-outline-secondary">Print</button>
+      </div>
+    `;
+
+    // Append to the body or a main container
+    document.querySelector(".modal-body").appendChild(recipeContainer);
+    //$(".modal-body").append(recipeCardDiscreption);
+
+    // Add Event Listeners
+    document
+      .getElementById("printRecipe")
+      .addEventListener("click", () => window.print());
+
+  } catch (error) {
+    console.error("Error fetching recipe details:", error);
+    alert("An error occurred while fetching the recipe details. Please try again.");
+  }
+}
+
++
 // Initial random recipes fetch
 getSpoonacularRandom();
 
