@@ -92,20 +92,12 @@
   width: 100%;
 }
 
-.subscribe {
-  padding: 10px 20px;
-}
-
 @media (min-width: 768px) {
   .modal-body {
     width: 700px;
     min-width: 500px;
     min-height: 500px;
   }
-}
-
-.subscribeBtn {
-  padding: 7px 0;
 }
 
 #reserved {
@@ -132,7 +124,13 @@
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
 }
 
+.card-deck {
+  justify-content: space-between;
+}
 
+#recipes {
+  justify-content: space-between;
+}
 .notification {
     background-color: #4caf50;
     color: white;
@@ -150,4 +148,85 @@
     background-color: yellowgreen;
   } 
 
+  .dialog {
+    border-color: #55ac08;
+    border-radius: 15px;
+  }
 
+  .btn-close {
+    border-color: white;
+  }
+  
+  .modal-body {
+    padding: 20px;
+    display: flex;
+   justify-content: center;
+   align-items: center;
+  }
+  
+  .recipe-header {
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  .recipe-header h2 {
+    color: var(--darkLime);
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .recipe-image {
+    width: 100%;
+    border-radius: 10px;
+    margin: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Ingredients and instructions styling */
+  .subtitle {
+    margin-top: 20px;
+    color:#55ac08;
+  }
+  .ingredients-list,
+  .recipe-instructions {
+    padding-left: 20px;
+    margin: 15px;
+  }
+  
+  .ingredients-list li,
+  .recipe-instructions li {
+    padding: 5px 10px;
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.5;
+    border-bottom: 1px dashed var(--lightGreen);
+  }
+  
+  .ingredients-list li::marker,
+  .recipe-instructions li::marker {
+    color: #55ac08;
+    font-weight: 700;
+  }
+
+  .ingredients-list li:last-child,
+  .recipe-instructions li:last-child {
+    border-bottom: none;
+  }
+    
+  /* Action buttons */
+  .recipe-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .recipe-actions button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+  }
+  
+  

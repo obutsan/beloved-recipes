@@ -328,10 +328,18 @@ async function renderRecipePage(recipeId) {
     recipeContainer.innerHTML = `
       <div class="recipe-header">
         <h2>${recipe.title}</h2>
-        <button id="closeRecipePage" class="btn btn-danger">Close</button>
       </div>
       <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image" />
-      <h3>Instructions</h3>
+      <h3 class='subtitle'>Ingredients</h3>
+        <ul class="ingredients-list">
+          ${recipe.extendedIngredients
+            .map(
+              (ingredient) =>
+                `<li>${ingredient.original}</li>`
+            )
+            .join("")}
+        </ul>    
+      <h3 class='subtitle'>Instructions</h3>
       <ol class="recipe-instructions">
         ${recipe.analyzedInstructions.length
           ? recipe.analyzedInstructions[0].steps
@@ -342,6 +350,7 @@ async function renderRecipePage(recipeId) {
       <div class="recipe-actions">
         <button id="addToFavorites" class="btn btn-outline-primary">Add to Favorites</button>
         <button id="printRecipe" class="btn btn-outline-secondary">Print</button>
+        <button id="shareButton" class="btn btn-success">Share</button>
       </div>
     `;
 
