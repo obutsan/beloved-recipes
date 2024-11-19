@@ -77,6 +77,11 @@
   padding: 3%;
 }
 
+.dialog {
+  border-color: var(--lightGrey);
+  border-radius: 15px;
+}
+
 .modal-header {
   justify-content: end;
 }
@@ -148,13 +153,13 @@
     background-color: yellowgreen;
   } 
 
-  .dialog {
-    border-color: #55ac08;
-    border-radius: 15px;
-  }
-
   .btn-close {
     border-color: white;
+  }
+
+  .btn-close:focus {
+    outline: none;
+    box-shadow: none; /* Якщо браузер додає тінь */
   }
   
   .modal-body {
@@ -216,17 +221,49 @@
   /* Action buttons */
   .recipe-actions {
     display: flex;
-    justify-content: space-around;
+    justify-content:flex-start;
     gap: 10px;
     margin-top: 20px;
   }
   
-  .recipe-actions button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: transform 0.2s ease, background-color 0.3s ease;
+  .btn-action {
+    border: none;
+    background: none;
+    width: 45px;
   }
   
+  .recipe-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-action {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 25px 0;
+  }
+
+  .tooltip {
+    position: absolute;
+    bottom: 110%; /* Размещаем над кнопкой */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color:#b0f097;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+  }
+
+  .btn-action:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
   

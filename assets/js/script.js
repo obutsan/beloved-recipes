@@ -348,9 +348,18 @@ async function renderRecipePage(recipeId) {
           : "<p>No instructions available</p>"}
       </ol>
       <div class="recipe-actions">
-        <button id="addToFavorites" class="btn btn-outline-primary">Add to Favorites</button>
-        <button id="printRecipe" class="btn btn-outline-secondary">Print</button>
-        <button id="shareButton" class="btn btn-success">Share</button>
+        <button id="addToFavorites" class="btn-action" type='button'>
+          <img src="./assets/images/icons/cookbook.png" alt="add to book" class="cookbook" width="35" height="35"/>
+          <span class="tooltip">Add to Book</span>
+        </button>
+        <button id="printRecipe" class="btn-action" type='button'>
+          <img src="./assets/images/icons/print.png" alt="print" class="print" width="35" height="35"/>
+          <span class="tooltip">Print Recipe</span>  
+        </button>
+        <button id="shareButton" class="btn-action" type='button'>
+          <img src="./assets/images/icons/share.png" alt="share" class="share" width="35" height="35"/>
+          <span class="tooltip">Share Recipe</span>
+        </button>
       </div>
     `;
 
@@ -369,7 +378,7 @@ async function renderRecipePage(recipeId) {
   }
 }
 
-+
+
 // Initial random recipes fetch
 getSpoonacularRandom();
 
