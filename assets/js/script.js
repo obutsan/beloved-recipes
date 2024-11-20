@@ -61,34 +61,18 @@ async function getDetailsById(recipeId) {
   }
 }
 
-// function that render recipe description
-
-/*async function renderDescriptionCard(id) {
-  try {
-    const response = await fetch(
-      `${spoonacularURL}/${id}/card?apiKey=${spoonAPI_KEY}`
-    );
-    const data = await response.json();
-    let recipeCardDiscreption = $("<img>", {
-      class: "modalImg",
-      src: data.url,
-      alt: "Recipe description",
-    });
-    $(".modal-body").append(recipeCardDiscreption);
-  } catch (error) {
-    displayErrorMessage();
-  }
-}
-  */
-
 const recipesContainer = $("#recipes");
 const modal = document.querySelector("dialog");
 
 // function that render recipes cards
 
-function renderCard(recipe, servings, id) {
+/*function renderCard(recipe, servings, id) {
   let cardEl = $('<div class="card h-100" style="width: 15rem;">').attr("data-id", id);
-  let cardImg = $('<img class="card-img-top" alt="recipe img">').attr("src", recipe.image);
+  let cardImg = $('<img class="card-img-top" alt="recipe img">').attr(
+    "src",
+    recipe.image || "./assets/images/icons/placeholder.png" // Default image if none is provided
+  );
+
   let cardBody = $('<div class="card-body">');
   let cardTitle = $('<h5 class="card-title">').text(recipe.title);
 
@@ -98,7 +82,7 @@ function renderCard(recipe, servings, id) {
   // Cooking time column
   let timeColumn = $('<div class="col">');
   if (recipe.readyInMinutes) {
-    let clockIcon = $('<span class="material-symbols-outlined">timer</span>');
+    let clockIcon = $('<img width="25" height="25" src="./assets/images/icons/clock.png" alt="clock icon"/>');
     let cookingTime = $('<p class="card-text">').text(`${recipe.readyInMinutes} min`);
     timeColumn.append(clockIcon, cookingTime);
   }
@@ -108,7 +92,7 @@ function renderCard(recipe, servings, id) {
   if (servings) {
     servingsColumn.append(
       $(
-        '<img width="25" height="25" src="./assets/images/icons/persons.png" alt="servings icon"/>'
+        '<img width="25" height="25" src="./assets/images/icons/waiter.png" alt="servings icon"/>'
       ),
       $('<p class="card-text">').text(`${servings} pers.`)
     );
@@ -117,7 +101,7 @@ function renderCard(recipe, servings, id) {
   // Favorite icon column
   let favoriteColumn = $('<div class="col-auto">');
   let favouriteIcon = $(
-    '<img class="favouriteIcon" width="25" height="25" style="margin-bottom:20px" src="./assets/images/icons/notfavourite.png" alt="Not Favorite Icon"/>'
+    '<img class="favouriteIcon" width="25" height="25" style="margin-bottom:20px" src="./assets/images/icons/cookbookNotAdded.png" alt="Not Favorite Icon"/>'
   );
   favoriteColumn.append(favouriteIcon);
 
@@ -129,6 +113,66 @@ function renderCard(recipe, servings, id) {
   $(".card-deck").append(cardEl);
 
 }
+  */
+
+function renderCard(recipe, servings, id) {
+  // Контейнер для колонки, яка забезпечує адаптивність
+  let cardCol = $('<div class="col">');
+
+  // Вміст картки
+  let cardEl = $('<div class="card h-100">').attr("data-id", id);
+
+  // Зображення
+  let cardImg = $('<img class="card-img-top" alt="recipe img">').attr(
+    "src",
+    recipe.image || "./assets/images/icons/placeholder.png" // Default image if none is provided
+  );
+
+  // Тіло картки
+  let cardBody = $('<div class="card-body">');
+  let cardTitle = $('<h5 class="card-title">').text(recipe.title);
+
+  // Рядок для тексту та іконок
+  let bottomRow = $('<div class="row align-items-center">');
+
+  // Колонка для часу приготування
+  let timeColumn = $('<div class="col">');
+  if (recipe.readyInMinutes) {
+    let clockIcon = $('<img width="25" height="25" src="./assets/images/icons/clock.png" alt="clock icon"/>');
+    let cookingTime = $('<p class="card-text">').text(`${recipe.readyInMinutes} min`);
+    timeColumn.append(clockIcon, cookingTime);
+  }
+
+  // Колонка для кількості порцій
+  let servingsColumn = $('<div class="col">');
+  if (servings) {
+    servingsColumn.append(
+      $(
+        '<img width="25" height="25" src="./assets/images/icons/waiter.png" alt="servings icon"/>'
+      ),
+      $('<p class="card-text">').text(`${servings} pers.`)
+    );
+  }
+
+  // Колонка для іконки улюбленого
+  let favoriteColumn = $('<div class="col-auto">');
+  let favouriteIcon = $(
+    '<img class="favouriteIcon" width="25" height="25" src="./assets/images/icons/cookbookNotAdded.png" style="margin-bottom:20px" alt="Not Favorite Icon"/>'
+  );
+  favoriteColumn.append(favouriteIcon);
+
+  // Додати всі елементи до картки
+  bottomRow.append(timeColumn, servingsColumn, favoriteColumn);
+  cardBody.append(cardTitle, bottomRow);
+  cardEl.append(cardImg, cardBody);
+
+  // Додати картку до колонки
+  cardCol.append(cardEl);
+
+  // Додати колонку до контейнера карток
+  $(".card-deck").append(cardCol);
+}
+
 
 // function to show notification
 function showNotification(message, favouriteIcon, isError = false) {
@@ -162,12 +206,12 @@ function toggleFavourite(recipeID, favouriteIcon) {
     if (fav.includes(recipeID)) {
       // Remove the recipeID from favorites
       fav = fav.filter(id => id !== recipeID);
-      favouriteIcon.attr("src", "./assets/images/icons/notfavourite.png");
+      favouriteIcon.attr("src", "./assets/images/icons/cookbookNotAdded.png");
       showNotification("Recipe removed from favourites", favouriteIcon, true);
     } else {
       // Add the recipeID to favorites
       fav.push(recipeID);
-      favouriteIcon.attr("src", "./assets/images/icons/favourite.png");
+      favouriteIcon.attr("src", "./assets/images/icons/cookbookAdded.png");
       showNotification("Recipe added to favourites", favouriteIcon);
     }
   
@@ -180,6 +224,8 @@ function toggleFavourite(recipeID, favouriteIcon) {
     const card = e.currentTarget;
     const cardId = card.getAttribute("data-id");
     const target = $(e.target);
+    console.log(cardId);
+    console.log(target);
     
     if (target.hasClass("favouriteIcon")) {
       // Toggle favorite if the favorite icon is clicked
@@ -219,7 +265,7 @@ $(".close").on("click", (e) => {
 function displayFavourites() {
   const fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   const offcanvasBody = $(".offcanvas-body");
-
+  console.log(fav);
   offcanvasBody.empty();
 
   // Loop through each favorite recipe ID and render details
@@ -235,7 +281,7 @@ function displayFavourites() {
 }
 
 // Display favorite recipes in the offcanvas
-$(document).on("click", ".material-icons", function () {
+$(document).on("click", ".cookbook", function () {
     displayFavourites();
   });
 
@@ -377,7 +423,6 @@ async function renderRecipePage(recipeId) {
     alert("An error occurred while fetching the recipe details. Please try again.");
   }
 }
-
 
 // Initial random recipes fetch
 getSpoonacularRandom();

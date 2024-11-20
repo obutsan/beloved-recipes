@@ -34,6 +34,16 @@
   border-top: 1px solid var(--lightGreen);
 }
 
+.slogan {
+  margin: 0;
+}
+
+.subcontainer {
+  width: auto;
+  display:flex;
+  flex-direction: row;
+}
+
 .btn {
   background: var(--darkLime);
   color: var(--lightColor);
@@ -45,15 +55,21 @@
 
 .btn-fav {
   border: none;
-  margin-left: 20px;
 }
 
 .btnshadow:hover {
   box-shadow: 0 30px 30px var(--darkLime);
 }
-.btn:hover {
+.btn:hover, .btn-search:hover {
   box-shadow: 0 6px 10px var(--darkLime);
   background-color: var(--lightColor);
+  border-color: var(--darkLime);
+  color: var(--darkLime)
+}
+
+.btn-search:hover {
+  box-shadow: 0 6px 10px var(--darkLime);
+  background-color: var(--lightGreen);
   border-color: var(--darkLime);
   color: var(--darkLime)
 }
@@ -266,4 +282,17 @@
     opacity: 1;
     visibility: visible;
   }
-  
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  height: 170px;
+  justify-content: space-between;
+}
+
+@media (max-width: 767px) {
+  .subcontainer {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

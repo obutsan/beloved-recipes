@@ -15,43 +15,56 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg container">
-      <div class="container">
-        <a class="navbar-brand logo" href="/index.html" id="logo"><img src="./assets/images/logo.jpg" alt="logo" style="width: 110px; height: 110px;"/></a>
-        <div class="navbar-text">
-          <p class="fw-bold fst-italic font-monospace fs-5 text-success text-center py-3 slogan">
-            Your go-to place for delicious recipes and culinary inspiration.
-          </p>
-          
-          
-        </div>  
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <form class="d-flex" id="searchForm">
-                <label for="query" class="visually-hidden">Search for recipes</label>
-                <input 
-                  class="form-control me-2" 
-                  type="search" 
-                  name="query" 
-                  placeholder="Enter recipe name" 
-                  id="query" 
-                />
-                <button 
-                  class="btn btn-outline-success" 
-                  type="submit">
-                  Search
-                </button>
-              </form>              
+    <nav class="navbar navbar-expand-lg">
+      <div class="container justify-content-center">
+        <div class="row w-100 g-2">
+          <!-- 1. Logo Column -->
+          <div class="col-6 col-md-2 order-1 order-md-1">
+            <a class="navbar-brand logo" href="/index.html" id="logo">
+              <img src="./assets/images/logo.jpg" alt="logo" style="width: 110px; height: 110px;"/>
+            </a>
+          </div>
+      
+          <!-- 2. Text Column -->
+          <div class="col-12 col-md-6 d-none d-md-block order-md-2">
+            <div class="navbar-text">
+              <p class="fw-bold fst-italic font-monospace fs-5 text-success text-center py-3 slogan">
+                Your go-to place for delicious recipes and<br/>culinary inspiration.
+              </p>  
+            </div>
+          </div>
+      
+          <!-- 3. Form Column -->
+          <div class="col-12 col-md-3 d-flex justify-content-end order-3 order-md-3">
+            <form class="d-flex align-items-center w-100" id="searchForm">
+              <!-- Label for Accessibility -->
+              <label for="query" class="visually-hidden">Search for recipes</label>
+      
+              <!-- Input Field -->
+              <input 
+                class="form-control me-2" 
+                type="search" 
+                name="query" 
+                placeholder="Search recipe" 
+                id="query"
+              />
+      
+              <!-- Submit Button -->
+              <button class="btn btn-search" type="submit">
+                <img src="./assets/images/icons/search1.png" class="search" width="25" height="25" alt="search"/>
+              </button>
+            </form>
+          </div>
+      
+          <!-- 4. Button Column (Cookbook) -->
+          <div class="col-6 col-md-1 text-center d-flex justify-content-end order-2 order-md-4">
             <button class="btn-fav" data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
-                <i class="material-icons" style="font-size: 48px; color: rgb(240, 127, 127)" data-toggle="modal" data-target="#exampleModal">favorite</i>
+              <img src="./assets/images/icons/cookbookAdded.png" alt="add to book" class="cookbook" width="48" height="48" data-toggle="modal" data-target="#exampleModal"/>
             </button>
-          </ul>
+          </div>
         </div>
       </div>
+      
     </nav>
   </header>
 
@@ -72,7 +85,7 @@
   <!-- Cards Section -->
 
   <div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 card-deck" id="recipes"></div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-4 card-deck" id="recipes"></div>
   </div>
 
   <!-- Scrollable modal -->
