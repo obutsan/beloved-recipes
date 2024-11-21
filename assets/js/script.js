@@ -64,57 +64,6 @@ async function getDetailsById(recipeId) {
 const recipesContainer = $("#recipes");
 const modal = document.querySelector("dialog");
 
-// function that render recipes cards
-
-/*function renderCard(recipe, servings, id) {
-  let cardEl = $('<div class="card h-100" style="width: 15rem;">').attr("data-id", id);
-  let cardImg = $('<img class="card-img-top" alt="recipe img">').attr(
-    "src",
-    recipe.image || "./assets/images/icons/placeholder.png" // Default image if none is provided
-  );
-
-  let cardBody = $('<div class="card-body">');
-  let cardTitle = $('<h5 class="card-title">').text(recipe.title);
-
-  // row to hold card-text and favorite icon
-  let bottomRow = $('<div class="row align-items-center">');
-
-  // Cooking time column
-  let timeColumn = $('<div class="col">');
-  if (recipe.readyInMinutes) {
-    let clockIcon = $('<img width="25" height="25" src="./assets/images/icons/clock.png" alt="clock icon"/>');
-    let cookingTime = $('<p class="card-text">').text(`${recipe.readyInMinutes} min`);
-    timeColumn.append(clockIcon, cookingTime);
-  }
-
-  // Servings column
-  let servingsColumn = $('<div class="col">');
-  if (servings) {
-    servingsColumn.append(
-      $(
-        '<img width="25" height="25" src="./assets/images/icons/waiter.png" alt="servings icon"/>'
-      ),
-      $('<p class="card-text">').text(`${servings} pers.`)
-    );
-  }
-
-  // Favorite icon column
-  let favoriteColumn = $('<div class="col-auto">');
-  let favouriteIcon = $(
-    '<img class="favouriteIcon" width="25" height="25" style="margin-bottom:20px" src="./assets/images/icons/cookbookNotAdded.png" alt="Not Favorite Icon"/>'
-  );
-  favoriteColumn.append(favouriteIcon);
-
-  bottomRow.append(timeColumn, servingsColumn, favoriteColumn);
-  cardBody.append(cardTitle, bottomRow);
-  cardEl.append(cardImg, cardBody);
-
-  // Append each card to the card deck
-  $(".card-deck").append(cardEl);
-
-}
-  */
-
 function renderCard(recipe, servings, id) {
   // Контейнер для колонки, яка забезпечує адаптивність
   let cardCol = $('<div class="col">');
@@ -261,6 +210,11 @@ $(".close").on("click", (e) => {
   $(".filter").on("click", function (e) {
     filterRecipes(e.target.id);
   });
+
+  // function to display cookbook
+
+
+// function to display cookbook
 
 function displayFavourites() {
   const fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
@@ -424,7 +378,31 @@ async function renderRecipePage(recipeId) {
   }
 }
 
+/*// Створення елемента пагінації
+const paginationElement = document.createElement("div");
+paginationElement.id = "pagination";
+document.body.appendChild(paginationElement); // Додаємо до DOM
+
+// Тепер можна ініціалізувати обсервер
+const observer = new IntersectionObserver(
+  async (entries) => {
+    if (entries[0].isIntersecting) {
+      currentPage++;
+      await filterRecipes("main course", currentPage); // Замініть "main course" на бажаний тип
+    }
+  },
+  { threshold: 1.0 }
+);
+observer.observe(paginationElement);
+
+
+
+
+observer.observe(document.getElementById("pagination")); // Спостерігаємо за контейнером пагінації
+*/
+
 // Initial random recipes fetch
+
 getSpoonacularRandom();
 
 
