@@ -83,7 +83,7 @@
 
 .favouriteIcon:hover {
   cursor: pointer;
-  
+
 }
 
 .icons-link {
@@ -147,6 +147,11 @@
 }
 
 .card-deck {
+  justify-content: space-between;
+}
+
+.offcanvas-body{
+  padding: 20px;
   justify-content: space-between;
 }
 
@@ -289,6 +294,12 @@
   flex-direction: column;
   height: 170px;
   justify-content: space-between;
+}
+
+.container-fav-title, .offcanvas-title {
+  color: var(--darkLime);
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 @media (max-width: 767px) {

@@ -106,31 +106,34 @@
   <section class="section"></section>
 
   <!-- Offcanvas Sidebar -->
-  <div class="offcanvas offcanvas-start w-100" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Favourites</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  
+  <div class="offcanvas offcanvas-start w-100" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="overflow-y: auto;">
+    <div class="container">
+      <div class="offcanvas-header">
+        <div class="container-fav-title d-flex justify-content-center w-100">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Favourites</h5>
+        </div>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-4" id="fav"></div>
+      <button id="clearLocalStorageBtn" class="btn btn-danger">Clear All</button>
     </div>
-    <div class="offcanvas-body">
-      <!-- Favourites content goes here -->
-    </div>
-    <button id="clearLocalStorageBtn" class="btn btn-danger">Clear All</button>
   </div>
- 
-    <!-- Modal for showing the error fetching data  -->
-    <div class="modal fade text-start"  data-bs-keyboard="false" id="modal1" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Sorry, this is a Page Error.</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <p>Error while fetching data.</p>
-              </div>
-          </div>
+  
+ <!-- Modal for showing the error fetching data  -->
+  <div class="modal fade text-start"  data-bs-keyboard="false" id="modal1" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sorry, this is a Page Error.</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Error while fetching data.</p>
+        </div>
       </div>
     </div>
+  </div>
 
     <!-----------------------------FOOTER --------------------------->
 

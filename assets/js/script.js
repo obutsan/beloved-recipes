@@ -30,6 +30,7 @@ async function filterRecipes(type) {
 
 // function that get random recipes
 async function getSpoonacularRandom() {
+  console.log('hello');
   try {
     const response = await fetch(
       `${spoonacularURL}/random?number=12&apiKey=${spoonAPI_KEY}`
@@ -37,10 +38,8 @@ async function getSpoonacularRandom() {
     const data = await response.json();
     console.log(data.recipes);
     for (const recipe of data.recipes) {
-        // Render the card with the obtained nutrition information
         renderCard(recipe, recipe.servings, recipe.id);
     }
-    //addCardEventListener();
   } catch (error) {
     displayErrorMessage();
   }
@@ -64,62 +63,70 @@ async function getDetailsById(recipeId) {
 const recipesContainer = $("#recipes");
 const modal = document.querySelector("dialog");
 
+//function to render cards
+
 function renderCard(recipe, servings, id) {
-  // Контейнер для колонки, яка забезпечує адаптивність
   let cardCol = $('<div class="col">');
-
-  // Вміст картки
   let cardEl = $('<div class="card h-100">').attr("data-id", id);
-
-  // Зображення
   let cardImg = $('<img class="card-img-top" alt="recipe img">').attr(
     "src",
     recipe.image || "./assets/images/icons/placeholder.png" // Default image if none is provided
   );
 
-  // Тіло картки
   let cardBody = $('<div class="card-body">');
   let cardTitle = $('<h5 class="card-title">').text(recipe.title);
-
-  // Рядок для тексту та іконок
   let bottomRow = $('<div class="row align-items-center">');
-
-  // Колонка для часу приготування
+  
   let timeColumn = $('<div class="col">');
   if (recipe.readyInMinutes) {
     let clockIcon = $('<img width="25" height="25" src="./assets/images/icons/clock.png" alt="clock icon"/>');
-    let cookingTime = $('<p class="card-text">').text(`${recipe.readyInMinutes} min`);
+    let cookingTime = $('<p class="card-text time">').text(`${recipe.readyInMinutes} min`);
     timeColumn.append(clockIcon, cookingTime);
   }
 
-  // Колонка для кількості порцій
+  // Servings column
   let servingsColumn = $('<div class="col">');
   if (servings) {
     servingsColumn.append(
       $(
         '<img width="25" height="25" src="./assets/images/icons/waiter.png" alt="servings icon"/>'
       ),
-      $('<p class="card-text">').text(`${servings} pers.`)
+      $('<p class="card-text servings">').text(`${servings} pers.`)
     );
   }
 
-  // Колонка для іконки улюбленого
+  // Favourites column
   let favoriteColumn = $('<div class="col-auto">');
   let favouriteIcon = $(
     '<img class="favouriteIcon" width="25" height="25" src="./assets/images/icons/cookbookNotAdded.png" style="margin-bottom:20px" alt="Not Favorite Icon"/>'
   );
   favoriteColumn.append(favouriteIcon);
 
-  // Додати всі елементи до картки
+   // delete column
+   let deleteColumn = $('<div class="col-auto">');
+   let deleteIcon = $(
+     '<img class="deleteIcon" width="25" height="25" src="./assets/images/icons/delete.png" style="margin-bottom:20px" alt="Not Favorite Icon"/>'
+   );
+   deleteColumn.append(deleteIcon);
+
+  // add all elements to recipe card
+  if(recipe.status) {
+    console.log('1');
+    bottomRow.append(timeColumn, servingsColumn, deleteColumn);
+  } else {
+    console.log('2');
   bottomRow.append(timeColumn, servingsColumn, favoriteColumn);
+  }
   cardBody.append(cardTitle, bottomRow);
   cardEl.append(cardImg, cardBody);
 
-  // Додати картку до колонки
   cardCol.append(cardEl);
 
-  // Додати колонку до контейнера карток
-  $(".card-deck").append(cardCol);
+if(recipe.status) {
+  $(".offcanvas-body").append(cardCol);
+} else {
+ $(".card-deck").append(cardCol);
+}
 }
 
 
@@ -130,7 +137,6 @@ function showNotification(message, favouriteIcon, isError = false) {
       .toggleClass("error", isError)
       .text(message);
   
-    
     $("body").append(notification);
   
     const iconOffset = favouriteIcon.offset();
@@ -141,44 +147,75 @@ function showNotification(message, favouriteIcon, isError = false) {
     });
   
     notification.fadeIn();
-  
+
     setTimeout(() => {
       notification.fadeOut(() => notification.remove());
     }, 1500);
   }
 
+
 // toggle function to handle favourites
-function toggleFavourite(recipeID, favouriteIcon) {
-    let fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
+function toggleFavourite(recipe, favouriteIcon) {
+  let favorites = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   
-    // Check if recipeID is already in favorites
-    if (fav.includes(recipeID)) {
-      // Remove the recipeID from favorites
-      fav = fav.filter(id => id !== recipeID);
-      favouriteIcon.attr("src", "./assets/images/icons/cookbookNotAdded.png");
-      showNotification("Recipe removed from favourites", favouriteIcon, true);
-    } else {
-      // Add the recipeID to favorites
-      fav.push(recipeID);
-      favouriteIcon.attr("src", "./assets/images/icons/cookbookAdded.png");
-      showNotification("Recipe added to favourites", favouriteIcon);
-    }
+  // Check if the recipe is already in favorites
+
+  const existingRecipeIndex = favorites.findIndex((fav) => fav.id === recipe.id);
+
+if (existingRecipeIndex !== -1) {
+  // Recipe exists, remove it from favorites
+  favorites.splice(existingRecipeIndex, 1);
+  favouriteIcon.attr("src", "./assets/images/icons/cookbookNotAdded.png");
+  showNotification("Recipe removed from favourites", favouriteIcon, true);
+} else {
+  // Recipe does not exist, add it to favorites
+  favorites.push(recipe);
+  favouriteIcon.attr("src", "./assets/images/icons/cookbookAdded.png");
+  showNotification("Recipe added to favourites", favouriteIcon);
+}
+
+// Save updated favorites back to localStorage
+localStorage.setItem("favouriteRecipes", JSON.stringify(favorites));
   
-    // Save updated favorites back to localStorage
-    localStorage.setItem("favouriteRecipes", JSON.stringify(fav));
-  }
+}
 
  // Card click event listener to open modal or toggle favorite
  $(".card-deck").on("click", ".card", function (e) {
     const card = e.currentTarget;
     const cardId = card.getAttribute("data-id");
     const target = $(e.target);
-    console.log(cardId);
+    console.log(e.currentTarget);
     console.log(target);
     
     if (target.hasClass("favouriteIcon")) {
+            // Extract the recipe ID
+            const id = card.getAttribute("data-id");
+  
+            // Extract the recipe title
+            const title = card.querySelector(".card-title").textContent;
+        
+            // Extract the recipe image URL
+            const image = card.querySelector(".card-img-top").getAttribute("src");
+        
+            // Extract the ready in minutes
+            const readyInMinutes = card.querySelector(".time").textContent.replace(" min", "");
+        
+            // Extract the servings
+            const servings = card.querySelector(".servings").textContent.replace(" pers.", "");
+        
+            // Create the recipeData object
+            const recipeData = {
+              id: id,
+              title: title,
+              image: image,
+              readyInMinutes: parseInt(readyInMinutes, 10),
+              servings: parseInt(servings, 10),
+              status: 'favourite',
+            };
+        
+            console.log("Extracted Recipe Data:", recipeData);
       // Toggle favorite if the favorite icon is clicked
-      toggleFavourite(cardId, target);
+      toggleFavourite(recipeData, target);
     } else {
       // Otherwise, render card description
       modal.showModal();
@@ -186,7 +223,6 @@ function toggleFavourite(recipeID, favouriteIcon) {
       $(".modal-body").text("");
     }
   });
-
 
 // Function to inform the user of a error while fetching the data.
 function displayErrorMessage() {
@@ -211,30 +247,18 @@ $(".close").on("click", (e) => {
     filterRecipes(e.target.id);
   });
 
-  // function to display cookbook
 
-
-// function to display cookbook
+// function to display favourites
 
 function displayFavourites() {
   const fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   const offcanvasBody = $(".offcanvas-body");
   console.log(fav);
   offcanvasBody.empty();
-
-  // Loop through each favorite recipe ID and render details
-  fav.forEach(async (recipeId) => {
-    const recipeDetails = await getDetailsById(recipeId);
-    if (recipeDetails) {
-      const favoriteItem = $(
-        `<p>${recipeDetails.name}</p><a href="${recipeDetails.link}" target="_blank">View Recipe</a><hr>`
-      );
-      offcanvasBody.append(favoriteItem);
-    }
-  });
+  fav.forEach(recipe => renderCard(recipe, recipe.servings, recipe.id));
 }
 
-// Display favorite recipes in the offcanvas
+// add listener to favourite button
 $(document).on("click", ".cookbook", function () {
     displayFavourites();
   });
@@ -244,6 +268,38 @@ $("#clearLocalStorageBtn").on("click", function () {
     localStorage.clear();
     displayFavourites();
   });
+
+//function to delete from favourites
+
+function deleteFromFavourites(id) {
+  let favorites = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
+  const existingRecipeIndex = favorites.findIndex((fav) => fav.id === id);
+  console.log(id);
+  console.log(existingRecipeIndex);
+  favorites.splice(existingRecipeIndex, 1);
+  localStorage.setItem("favouriteRecipes", JSON.stringify(favorites));
+}
+
+// add listener to delete button
+
+$(".offcanvas-body").on("click", ".card", function (e) {
+    const card = e.currentTarget;
+    const cardId = card.getAttribute("data-id");
+    const target = $(e.target);
+    console.log(e.currentTarget);
+    console.log(target);
+    
+    if (target.hasClass("deleteIcon")) {
+      deleteFromFavourites(cardId); 
+      displayFavourites();    
+    } else {
+      // Otherwise, render card description
+      modal.showModal();
+      renderRecipePage(cardId);
+      $(".modal-body").text("");
+    }
+  });
+
 
 // Function to handle search 
 
@@ -368,9 +424,7 @@ async function renderRecipePage(recipeId) {
     //$(".modal-body").append(recipeCardDiscreption);
 
     // Add Event Listeners
-    document
-      .getElementById("printRecipe")
-      .addEventListener("click", () => window.print());
+    document.getElementById("printRecipe").addEventListener("click", () => window.print());
 
   } catch (error) {
     console.error("Error fetching recipe details:", error);
@@ -406,3 +460,16 @@ observer.observe(document.getElementById("pagination")); // Спостеріга
 getSpoonacularRandom();
 
 
+async function testRandomRecipes() {
+    try {
+        const response = await fetch(`${spoonacularURL}/random?number=1&apiKey=${spoonAPI_KEY}`);
+        const data = await response.json();
+        console.log("Random recipe:", data);
+        if (!data.recipes || !data.recipes.length) {
+            console.error("No recipes returned");
+        }
+    } catch (error) {
+        console.error("Test failed:", error);
+    }
+}
+testRandomRecipes();
