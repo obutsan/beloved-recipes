@@ -81,9 +81,8 @@
   transform: scale(1.2);
 }
 
-.favouriteIcon:hover {
+.favouriteIcon:hover, .deleteIcon:hover {
   cursor: pointer;
-
 }
 
 .icons-link {
@@ -102,7 +101,6 @@
 .modal-header {
   justify-content: end;
 }
-
 
 .modal-body {
   width: 100%;
@@ -307,4 +305,11 @@
     display: flex;
     flex-direction: column-reverse;
   }
+}
+
+.message {
+  padding: 20px;
+  background-color: indianred;
+  color: white;
+  font-weight: 500;
 }

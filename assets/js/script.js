@@ -3,10 +3,11 @@
 const spoonAPI_KEY = "e45feb6b607140ccb6606be1e50094dc";
 const spoonURL = "https://api.spoonacular.com/recipes/complexSearch";
 const spoonacularURL = "https://api.spoonacular.com/recipes";
+const recipesContainer = $("#recipes");
+const modal = document.querySelector("dialog");
 
 
 // function that gets recipes by type
-
 async function filterRecipes(type) {
   try {
     const response = await fetch(
@@ -45,26 +46,7 @@ async function getSpoonacularRandom() {
   }
 }
 
-//Get the recipe details by the Id
-
-async function getDetailsById(recipeId) {
-  try {
-    const response = await fetch(
-      `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${spoonAPI_KEY}`
-    );
-    const data = await response.json();
-    console.log(data);
-    return { name: data.title, link: data.sourceUrl };
-  } catch (error) {
-    displayErrorMessage();
-  }
-}
-
-const recipesContainer = $("#recipes");
-const modal = document.querySelector("dialog");
-
 //function to render cards
-
 function renderCard(recipe, servings, id) {
   let cardCol = $('<div class="col">');
   let cardEl = $('<div class="card h-100">').attr("data-id", id);
@@ -102,12 +84,12 @@ function renderCard(recipe, servings, id) {
   );
   favoriteColumn.append(favouriteIcon);
 
-   // delete column
-   let deleteColumn = $('<div class="col-auto">');
-   let deleteIcon = $(
+  // delete column
+  let deleteColumn = $('<div class="col-auto">');
+  let deleteIcon = $(
      '<img class="deleteIcon" width="25" height="25" src="./assets/images/icons/delete.png" style="margin-bottom:20px" alt="Not Favorite Icon"/>'
    );
-   deleteColumn.append(deleteIcon);
+  deleteColumn.append(deleteIcon);
 
   // add all elements to recipe card
   if(recipe.status) {
@@ -132,23 +114,23 @@ if(recipe.status) {
 
 // function to show notification
 function showNotification(message, favouriteIcon, isError = false) {
-       const notification = $("<div>")
-      .addClass("notification")
-      .toggleClass("error", isError)
-      .text(message);
+  const notification = $("<div>")
+  .addClass("notification")
+  .toggleClass("error", isError)
+  .text(message);
   
-    $("body").append(notification);
+  $("body").append(notification);
   
-    const iconOffset = favouriteIcon.offset();
-    notification.css({
-      top: iconOffset.top - 10, 
-      left: iconOffset.left + favouriteIcon.outerWidth() + 10, 
-      position: "absolute",
-    });
+  const iconOffset = favouriteIcon.offset();
+  notification.css({
+    top: iconOffset.top - 10, 
+    left: iconOffset.left + favouriteIcon.outerWidth() + 10, 
+    position: "absolute",
+  });
   
-    notification.fadeIn();
+  notification.fadeIn();
 
-    setTimeout(() => {
+  setTimeout(() => {
       notification.fadeOut(() => notification.remove());
     }, 1500);
   }
@@ -159,7 +141,6 @@ function toggleFavourite(recipe, favouriteIcon) {
   let favorites = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   
   // Check if the recipe is already in favorites
-
   const existingRecipeIndex = favorites.findIndex((fav) => fav.id === recipe.id);
 
 if (existingRecipeIndex !== -1) {
@@ -175,11 +156,10 @@ if (existingRecipeIndex !== -1) {
 }
 
 // Save updated favorites back to localStorage
-localStorage.setItem("favouriteRecipes", JSON.stringify(favorites));
-  
+localStorage.setItem("favouriteRecipes", JSON.stringify(favorites)); 
 }
 
- // Card click event listener to open modal or toggle favorite
+// add event listener to cards
  $(".card-deck").on("click", ".card", function (e) {
     const card = e.currentTarget;
     const cardId = card.getAttribute("data-id");
@@ -249,7 +229,6 @@ $(".close").on("click", (e) => {
 
 
 // function to display favourites
-
 function displayFavourites() {
   const fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   const offcanvasBody = $(".offcanvas-body");
@@ -270,7 +249,6 @@ $("#clearLocalStorageBtn").on("click", function () {
   });
 
 //function to delete from favourites
-
 function deleteFromFavourites(id) {
   let favorites = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   const existingRecipeIndex = favorites.findIndex((fav) => fav.id === id);
@@ -281,7 +259,6 @@ function deleteFromFavourites(id) {
 }
 
 // add listener to delete button
-
 $(".offcanvas-body").on("click", ".card", function (e) {
     const card = e.currentTarget;
     const cardId = card.getAttribute("data-id");
@@ -302,7 +279,6 @@ $(".offcanvas-body").on("click", ".card", function (e) {
 
 
 // Function to handle search 
-
 async function searchRecipes(query) {
   if (!query || query.trim() === "") {
     alert("Please enter a valid recipe name.");
@@ -311,8 +287,6 @@ async function searchRecipes(query) {
 
   const encodedQuery = encodeURIComponent(query.trim());
   const url = `https://api.spoonacular.com/recipes/autocomplete?number=12&query=${encodedQuery}&apiKey=${spoonAPI_KEY}`;
-
-  console.log(`Searching for: ${query}`);
 
   try {
     const response = await fetch(url);
@@ -323,7 +297,6 @@ async function searchRecipes(query) {
 
     const data = await response.json();
     document.getElementById("recipes").innerHTML = ""; // Clear previous results
-    console.log("Fetched recipes:", data);
 
     for (const recipe of data) {
       const recipeDetails = await fetchRecipeDetails(recipe.id);
@@ -338,7 +311,6 @@ async function searchRecipes(query) {
 }
 
 // Helper function to fetch detailed recipe data
-
 async function fetchRecipeDetails(id) {
   const url = `https://api.spoonacular.com/recipes/${id}/information?apiKey=${spoonAPI_KEY}`;
 
@@ -432,44 +404,6 @@ async function renderRecipePage(recipeId) {
   }
 }
 
-/*// Створення елемента пагінації
-const paginationElement = document.createElement("div");
-paginationElement.id = "pagination";
-document.body.appendChild(paginationElement); // Додаємо до DOM
-
-// Тепер можна ініціалізувати обсервер
-const observer = new IntersectionObserver(
-  async (entries) => {
-    if (entries[0].isIntersecting) {
-      currentPage++;
-      await filterRecipes("main course", currentPage); // Замініть "main course" на бажаний тип
-    }
-  },
-  { threshold: 1.0 }
-);
-observer.observe(paginationElement);
-
-
-
-
-observer.observe(document.getElementById("pagination")); // Спостерігаємо за контейнером пагінації
-*/
-
 // Initial random recipes fetch
 
 getSpoonacularRandom();
-
-
-async function testRandomRecipes() {
-    try {
-        const response = await fetch(`${spoonacularURL}/random?number=1&apiKey=${spoonAPI_KEY}`);
-        const data = await response.json();
-        console.log("Random recipe:", data);
-        if (!data.recipes || !data.recipes.length) {
-            console.error("No recipes returned");
-        }
-    } catch (error) {
-        console.error("Test failed:", error);
-    }
-}
-testRandomRecipes();
