@@ -11,11 +11,11 @@ This project is a recipe application that utilizes the Spoonacular API to fetch 
 - 💻 **User-friendly interface with recipe cards.**
 
 ## Technologies Used
-- 🌐 [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) ![HTML5](https://img.icons8.com/color/48/000000/html-5.png)
-- 🎨 [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) ![CSS3](https://img.icons8.com/color/48/000000/css3.png)
-- 📜 [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) ![JavaScript](https://img.icons8.com/color/48/000000/javascript.png)
-- 🔧 [jQuery](https://jquery.com/) ![jQuery](https://img.icons8.com/color/48/000000/jquery.png)
-- 🎉 [Bootstrap](https://getbootstrap.com/) ![Bootstrap](https://img.icons8.com/color/48/000000/bootstrap.png)
+- 🌐 HTML
+- 🎨 CSS
+- 📜 JavaScript
+- 🔧 jQuery
+- 🎉 Bootstrap (for styling and modal functionality)
 
 ## API Key
 To run this project, you will need a Spoonacular API key. You can obtain one by signing up on the [Spoonacular website](https://spoonacular.com/food-api) 🍽️.
