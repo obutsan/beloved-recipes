@@ -8,6 +8,7 @@ const modal = document.querySelector("dialog");
 
 
 // function that gets recipes by type
+
 async function filterRecipes(type) {
   try {
     const response = await fetch(
@@ -16,17 +17,24 @@ async function filterRecipes(type) {
     const data = await response.json();
     document.getElementById("recipes").innerHTML = ""; // Clear previous results 
 
-    for (const recipe of data.results) {
-      const recipeDetails = await fetchRecipeDetails(recipe.id);
-      if (recipeDetails) {
-        renderCard(recipeDetails, recipeDetails.servings, recipeDetails.id);
-      }
+    const recipeIds = data.results.map(recipe => recipe.id);
+    
+    // call to informationBulk API
+    const bulkResponse = await fetch(
+      `https://api.spoonacular.com/recipes/informationBulk?apiKey=${spoonAPI_KEY}&ids=${recipeIds.join(',')}`
+    );
+    const recipeDetails = await bulkResponse.json();
+
+    for (const recipeDetail of recipeDetails) {
+      renderCard(recipeDetail, recipeDetail.servings, recipeDetail.id);
     }
+    
     return data.results;
   } catch (error) {
     displayErrorMessage();
   }
 }
+
 
 
 // function that get random recipes
@@ -93,10 +101,8 @@ function renderCard(recipe, servings, id) {
 
   // add all elements to recipe card
   if(recipe.status) {
-    console.log('1');
     bottomRow.append(timeColumn, servingsColumn, deleteColumn);
   } else {
-    console.log('2');
   bottomRow.append(timeColumn, servingsColumn, favoriteColumn);
   }
   cardBody.append(cardTitle, bottomRow);
@@ -232,19 +238,15 @@ $(".close").on("click", (e) => {
 function displayFavourites() {
   const fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   const offcanvasBody = $(".offcanvas-body");
-  console.log(fav);
   offcanvasBody.empty();
+  if (!fav) {
+
+  }
   fav.forEach(recipe => renderCard(recipe, recipe.servings, recipe.id));
 }
 
 // add listener to favourite button
 $(document).on("click", ".cookbook", function () {
-    displayFavourites();
-  });
-
-// Clear all favorites
-$("#clearLocalStorageBtn").on("click", function () {
-    localStorage.clear();
     displayFavourites();
   });
 
@@ -278,7 +280,8 @@ $(".offcanvas-body").on("click", ".card", function (e) {
   });
 
 
-// Function to handle search 
+// Function to handle search form
+
 async function searchRecipes(query) {
   if (!query || query.trim() === "") {
     alert("Please enter a valid recipe name.");
@@ -298,17 +301,22 @@ async function searchRecipes(query) {
     const data = await response.json();
     document.getElementById("recipes").innerHTML = ""; // Clear previous results
 
-    for (const recipe of data) {
-      const recipeDetails = await fetchRecipeDetails(recipe.id);
-      if (recipeDetails) {
-        renderCard(recipeDetails, recipeDetails.servings, recipeDetails.id);
-      }
+    const recipeIds = data.map(recipe => recipe.id);
+    
+    const bulkResponse = await fetch(
+      `https://api.spoonacular.com/recipes/informationBulk?apiKey=${spoonAPI_KEY}&ids=${recipeIds.join(',')}`
+    );
+    const recipeDetails = await bulkResponse.json();
+
+    for (const recipeDetail of recipeDetails) {
+      renderCard(recipeDetail, recipeDetail.servings, recipeDetail.id);
     }
   } catch (error) {
     console.error("Error fetching recipes:", error);
     alert("An error occurred while fetching recipes. Please check your internet connection or try again later.");
   }
 }
+
 
 // Helper function to fetch detailed recipe data
 async function fetchRecipeDetails(id) {
@@ -393,7 +401,6 @@ async function renderRecipePage(recipeId) {
 
     // Append to the body or a main container
     document.querySelector(".modal-body").appendChild(recipeContainer);
-    //$(".modal-body").append(recipeCardDiscreption);
 
     // Add Event Listeners
     document.getElementById("printRecipe").addEventListener("click", () => window.print());
