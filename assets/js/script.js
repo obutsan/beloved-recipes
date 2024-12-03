@@ -243,8 +243,8 @@ function displayFavourites() {
     // If there are no favorites, render a message
     const noFavoriteRecipes = `
     <div class="nofav d-flex justify-content-center">
-      <a class="favlink" href="/index.html" id="link"> 
-        Find your beloved recipe and add it to your recipe book by clicking on the icon 
+      <a class="favlink" href="https://obutsan.github.io/beloved-recipes" id="link"> 
+        No recipes in your book yet. Find your beloved recipe and add it to your recipe book by clicking on the icon 
         <img class="favouriteIcon favIcon" width="25" height="25" src="./assets/images/icons/cookbookNotAdded.png" style="margin-bottom:20px" alt="Not Favorite Icon"/> 
         on the recipe card.
       </a>
