@@ -239,10 +239,20 @@ function displayFavourites() {
   const fav = JSON.parse(localStorage.getItem("favouriteRecipes")) || [];
   const offcanvasBody = $(".offcanvas-body");
   offcanvasBody.empty();
-  if (!fav) {
-
-  }
+  if (fav.length === 0) {
+    // If there are no favorites, render a message
+    const noFavoriteRecipes = `
+    <div class="nofav d-flex justify-content-center">
+      <a class="favlink" href="/index.html" id="link"> 
+        Find your beloved recipe and add it to your recipe book by clicking on the icon 
+        <img class="favouriteIcon favIcon" width="25" height="25" src="./assets/images/icons/cookbookNotAdded.png" style="margin-bottom:20px" alt="Not Favorite Icon"/> 
+        on the recipe card.
+      </a>
+    </div>`;
+    offcanvasBody.append(noFavoriteRecipes);
+  } else {
   fav.forEach(recipe => renderCard(recipe, recipe.servings, recipe.id));
+}
 }
 
 // add listener to favourite button
