@@ -256,7 +256,7 @@ function displayFavourites() {
 }
 
 // add listener to favourite button
-$(document).on("click", ".cookbook", function () {
+$(document).on("click", ".cookbook, .bookLink" , function () {
     displayFavourites();
   });
 

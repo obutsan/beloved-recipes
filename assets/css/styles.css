@@ -142,6 +142,11 @@
   width: 80%
 }
 
+.bookLink{
+  background: none;
+  padding: 0;
+}
+
 .favlink {
   color: var(--lightGreen);
 }
