@@ -58,10 +58,16 @@ async function getSpoonacularRandom() {
 function renderCard(recipe, servings, id) {
   let cardCol = $('<div class="col">');
   let cardEl = $('<div class="card h-100">').attr("data-id", id);
-  let cardImg = $('<img class="card-img-top" alt="recipe img">').attr(
+  /*let cardImg = $('<img class="card-img-top" alt="recipe img">').attr(
     "src",
     recipe.image || "./assets/images/icons/placeholder.png" // Default image if none is provided
-  );
+  );*/
+  let cardImg = $('<img class="card-img-top" alt="recipe img">')
+  .attr("src", recipe.image || "./assets/images/icons/placeholder.png")
+  .attr("loading", "lazy")     // lazy loading
+  .attr("width", "312")        // фіксована ширина
+  .attr("height", "180");      // фіксована висота
+
 
   let cardBody = $('<div class="card-body">');
   let cardTitle = $('<h5 class="card-title">').text(recipe.title);
