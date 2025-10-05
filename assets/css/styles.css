@@ -21,6 +21,14 @@
   gap: 5rem;
 }
 
+.responsive-logo {
+  width: 90px;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  margin: 0;
+}
+
 #hero {
   padding: 3% 5%;
 }
@@ -117,6 +125,10 @@
     width: 700px;
     min-width: 500px;
     min-height: 500px;
+  }
+
+  .responsive-logo {
+    width: 150px;
   }
 }
 
@@ -313,6 +325,11 @@
     flex-direction: column-reverse;
   }
 }
+
+@media (min-width: 1024px) {
+  .responsive-logo {
+    width: 180px;
+  }
 
 .message {
   padding: 20px;

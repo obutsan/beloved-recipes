@@ -58,10 +58,6 @@ async function getSpoonacularRandom() {
 function renderCard(recipe, servings, id) {
   let cardCol = $('<div class="col">');
   let cardEl = $('<div class="card h-100">').attr("data-id", id);
-  /*let cardImg = $('<img class="card-img-top" alt="recipe img">').attr(
-    "src",
-    recipe.image || "./assets/images/icons/placeholder.png" // Default image if none is provided
-  );*/
   let cardImg = $('<img class="card-img-top" alt="recipe img">')
   .attr("src", recipe.image || "./assets/images/icons/placeholder.png")
   .attr("loading", "lazy")     // lazy loading
