@@ -15,73 +15,52 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg py-1" style="min-height:60px;">
-      <div class="container">
-        <div class="row w-100 g-2 align-items-center justify-content-center" style="height:70px;">
-          <!-- Mobile header: logo, search, cookbook in one row -->
-          <div class="d-flex d-md-none w-100 align-items-center justify-content-between" style="height:60px;">
-            <!-- Logo -->
-            <a class="navbar-brand logo d-flex align-items-center justify-content-center" href="https://obutsan.github.io/beloved-recipes/" id="logo">
-              <img src="./assets/images/logo2.png" alt="logo" class="responsive-logo img-fluid" style="max-width:60px; height:auto;">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container justify-content-center">
+        <div class="row w-100 g-2">
+          <!-- 1. Logo Column -->
+          <div class="col-6 col-md-2 order-1 order-md-1">
+            <a class="navbar-brand logo" href="https://obutsan.github.io/beloved-recipes/" id="logo">
+             <img src="./assets/images/logo2.png" alt="logo" class="responsive-logo">
             </a>
-            <!-- Search -->
-            <form class="d-flex align-items-center flex-grow-1 mx-2" id="searchForm">
+          </div>
+      
+          <!-- 2. Text Column -->
+          <div class="col-12 col-md-6 d-none d-md-block order-md-2">
+            <div class="navbar-text">
+              <p class="fw-bold fst-italic font-monospace fs-5 text-success text-center py-3 slogan">
+                Your go-to place for delicious recipes and<br/>culinary inspiration.
+              </p>  
+            </div>
+          </div>
+      
+          <!-- 3. Form Column -->
+          <div class="col-12 col-md-3 d-flex justify-content-end order-3 order-md-3">
+            <form class="d-flex align-items-center w-100" id="searchForm">
+              <!-- Label for Accessibility -->
               <label for="query" class="visually-hidden">Search for recipes</label>
+      
+              <!-- Input Field -->
               <input 
                 class="form-control me-2" 
                 type="search" 
                 name="query" 
                 placeholder="Search recipe" 
                 id="query"
-                style="min-width:80px; max-width:140px;"
               />
+      
+              <!-- Submit Button -->
               <button class="btn btn-search" type="submit">
                 <img src="./assets/images/icons/search1.png" class="search" width="25" height="25" alt="search"/>
               </button>
             </form>
-            <!-- Cookbook -->
-            <button class="btn-fav ms-2" data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
-              <img src="./assets/images/icons/cookbookAdded.png" alt="add to book" class="cookbook" width="36" height="36"/>
-            </button>
           </div>
-          <!-- Desktop header: logo, slogan, search, cookbook -->
-          <div class="d-none d-md-flex w-100 align-items-center justify-content-center" style="height:60px;">
-            <!-- 1. Logo Column -->
-            <div class="col-6 col-md-2 d-flex align-items-center justify-content-center order-1 order-md-1" style="height:60px;">
-              <a class="navbar-brand logo d-flex align-items-center justify-content-center" href="https://obutsan.github.io/beloved-recipes/" id="logo">
-                <img src="./assets/images/logo2.png" alt="logo" class="responsive-logo img-fluid" style="max-width:80px; height:auto;">
-              </a>
-            </div>
-            <!-- 2. Text Column -->
-            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center order-md-2" style="height:60px;">
-              <div class="navbar-text w-100 text-center">
-                <p class="fw-bold fst-italic font-monospace fs-6 text-success slogan m-0">
-                  Find your favourite recipe
-                </p>
-              </div>
-            </div>
-            <!-- 3. Form Column -->
-            <div class="col-12 col-md-3 d-flex align-items-center justify-content-end order-3 order-md-3" style="height:60px;">
-              <form class="d-flex align-items-center w-100" id="searchForm">
-                <label for="query" class="visually-hidden">Search for recipes</label>
-                <input 
-                  class="form-control me-2" 
-                  type="search" 
-                  name="query" 
-                  placeholder="Search recipe" 
-                  id="query"
-                />
-                <button class="btn btn-search" type="submit">
-                  <img src="./assets/images/icons/search1.png" class="search" width="25" height="25" alt="search"/>
-                </button>
-              </form>
-            </div>
-            <!-- 4. Button Column (Cookbook) -->
-            <div class="col-6 col-md-1 d-flex align-items-center justify-content-end order-2 order-md-4" style="height:60px;">
-              <button class="btn-fav" data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
-                <img src="./assets/images/icons/cookbookAdded.png" alt="add to book" class="cookbook" width="40" height="40"/>
-              </button>
-            </div>
+      
+          <!-- 4. Button Column (Cookbook) -->
+          <div class="col-6 col-md-1 text-center d-flex justify-content-end order-2 order-md-4">
+            <button class="btn-fav" data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
+              <img src="./assets/images/icons/cookbookAdded.png" alt="add to book" class="cookbook" width="48" height="48" data-toggle="modal" data-target="#exampleModal"/>
+            </button>
           </div>
         </div>
       </div>
@@ -224,3 +203,4 @@
 
   </body>
 </html>
+
